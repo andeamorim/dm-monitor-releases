@@ -42,6 +42,16 @@
   th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 8px 10px 8px 0; vertical-align: top; }
   th { color: var(--muted); font-weight: 600; }
   .tablewrap { overflow-x: auto; }
+  .shots { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px; }
+  figure.shot { margin: 16px 0 8px; }
+  .shots figure.shot { margin: 0; }
+  figure.shot img { display: block; border: 1px solid var(--line); border-radius: 14px; background: #000; }
+  figure.phone img { width: 240px; max-width: 100%; border-radius: 22px; }
+  figure.desk img, figure.land img { width: 100%; }
+  figure.land { max-width: 560px; }
+  figcaption { color: var(--muted); font-size: 13px; margin-top: 6px; max-width: 240px; }
+  figure.desk figcaption, figure.land figcaption { max-width: none; }
+  @media (max-width: 560px) { figure.phone img { width: 46vw; } .shots { gap: 10px; } }
   footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding: 24px 0 48px; margin-top: 48px; }
   aside.toc summary { display: none; }
   @media (max-width: 820px) {
@@ -168,6 +178,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
     <ul><li>iPhone: after installing, also switch it on in Settings → General → About → <b>Certificate Trust Settings</b>.</li></ul></li>
   <li>Open the app and add it to the <b>Home Screen</b> (Share → Add to Home Screen). From then on it opens like any app.</li>
 </ol>
+<figure class="shot phone"><img src="img/phone-onboarding.jpg" alt="The guide the link opens: one step at a time, for iPhone, Android, Mac and Windows." loading="lazy"><figcaption>The guide the link opens: one step at a time, for iPhone, Android, Mac and Windows.</figcaption></figure>
 
 <h2 id="mix">Choose your mix</h2>
 <ul>
@@ -175,6 +186,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li>Next time, <b>Continue</b> takes you straight back.</li>
   <li>☰ → <b>Change mix</b> to switch.</li>
 </ul>
+<div class="shots"><figure class="shot phone"><img src="img/phone-choose-console.jpg" alt="Type your name and pick the console." loading="lazy"><figcaption>Type your name and pick the console.</figcaption></figure><figure class="shot phone"><img src="img/phone-choose-mix.jpg" alt="Pick your mix. Stereo mixes are one item." loading="lazy"><figcaption>Pick your mix. Stereo mixes are one item.</figcaption></figure></div>
 
 <h2 id="faders">The mixer screen</h2>
 <ul>
@@ -185,6 +197,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li>☰ → <b>Active now</b>: shows first the channels that have signal.</li>
   <li>The dot next to the mix name: green = connected. If it goes red, the app reconnects by itself.</li>
 </ul>
+<div class="shots"><figure class="shot phone"><img src="img/phone-mixer.jpg" alt="Upright: 4 channels + your master." loading="lazy"><figcaption>Upright: 4 channels + your master.</figcaption></figure><figure class="shot phone"><img src="img/phone-menu.jpg" alt="☰ — everything for the service and your mix." loading="lazy"><figcaption>☰ — everything for the service and your mix.</figcaption></figure></div><figure class="shot land"><img src="img/phone-mixer-landscape.jpg" alt="Sideways: 8 channels per page." loading="lazy"><figcaption>Sideways: 8 channels per page.</figcaption></figure>
 
 <h2 id="mymix">Edit my mix — your own screen</h2>
 <p>☰ → <b>Edit my mix</b>: drag channels into the order you like and tap 👁 to hide the ones you don't use.</p>
@@ -194,6 +207,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li><b>Back to the mix default</b> returns to the layout the tech prepared.</li>
   <li>Channels the tech <b>locked</b> don't appear here (see <a href="#hide-lock">hidden vs locked</a>).</li>
 </ul>
+<figure class="shot phone"><img src="img/phone-edit-my-mix.jpg" alt="Drag by the ⠿ handle, tap 👁 to hide. “saved” at the top — no Save button." loading="lazy"><figcaption>Drag by the ⠿ handle, tap 👁 to hide. “saved” at the top — no Save button.</figcaption></figure>
 
 <h2 id="groups">Groups</h2>
 <ul>
@@ -201,6 +215,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li>The group's ON remembers who was on.</li>
   <li>Groups belong to the mix, so they show on every phone using it.</li>
 </ul>
+<figure class="shot phone"><img src="img/phone-groups.jpg" alt="Suggested groups come from the channel names — tap + Add." loading="lazy"><figcaption>Suggested groups come from the channel names — tap + Add.</figcaption></figure>
 
 <h2 id="scenes">Scenes</h2>
 <p>A scene is a snapshot of <b>your whole mix</b>: volumes, ON/OFF, pan and your screen (order + hidden channels).</p>
@@ -211,12 +226,14 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li>New phone? Load your scene and your mix and screen come back.</li>
   <li>Search by name or musician; <b>All / Mine</b>; ⋯ = save over it or delete.</li>
 </ul>
+<div class="shots"><figure class="shot phone"><img src="img/phone-scenes.jpg" alt="Everyone’s scenes, newest first." loading="lazy"><figcaption>Everyone’s scenes, newest first.</figcaption></figure><figure class="shot phone"><img src="img/phone-scene-load.jpg" alt="Loading asks first — here, Ana’s scene on Joel’s mix." loading="lazy"><figcaption>Loading asks first — here, Ana’s scene on Joel’s mix.</figcaption></figure><figure class="shot phone"><img src="img/phone-scene-undo.jpg" alt="Loaded: Joel’s screen now starts with the vocals. Undo is right there." loading="lazy"><figcaption>Loaded: Joel’s screen now starts with the vocals. Undo is right there.</figcaption></figure></div>
 
 <h2 id="lock">Lock the screen</h2>
 <p>Tap the 🔒 at the top during the service so nothing moves by accident. Hold it for 1 second to unlock.</p>
 
 <h2 id="admin">Sound tech: opening the Admin</h2>
 <p>From the computer: the DM Monitor window (or tray → <b>Open Admin</b>). From any device on the network: <code>https://&lt;computer&gt;.local:8080/admin</code>. Sections: <b>Overview · Mixes · Musicians · Scenes · Look &amp; branding · Security &amp; backup</b>.</p>
+<figure class="shot desk"><img src="img/admin-overview.jpg" alt="Overview: console status, who is online, the link for new musicians — and the Update banner when a new version is out." loading="lazy"><figcaption>Overview: console status, who is online, the link for new musicians — and the Update banner when a new version is out.</figcaption></figure>
 
 <h2 id="mixes">Mixes: what each musician sees</h2>
 <ul>
@@ -227,6 +244,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li><b>Templates</b>: save a layout and apply it to several mixes.</li>
   <li>Changes are a draft until you press <b>Save changes</b>.</li>
 </ul>
+<figure class="shot desk"><img src="img/admin-mixes.jpg" alt="The mixes musicians can pick. Stereo pairs are one row." loading="lazy"><figcaption>The mixes musicians can pick. Stereo pairs are one row.</figcaption></figure><figure class="shot desk"><img src="img/admin-mix-editor.jpg" alt="A mix’s default screen, with a master limit and a live preview of what the musician sees." loading="lazy"><figcaption>A mix’s default screen, with a master limit and a live preview of what the musician sees.</figcaption></figure>
 
 <h2 id="hide-lock">Hidden vs locked channels</h2>
 <div class="tablewrap"><table>
@@ -236,6 +254,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <tr><td>Musician can move it (fader, ON, pan, scenes)</td><td>Yes, once shown</td><td><b>Never</b></td></tr>
   <tr><td>Use it for</td><td>A tidy starting screen</td><td>Channels a musician must not touch (e.g. the drum mics on the singers' mix)</td></tr>
 </table></div>
+<figure class="shot desk"><img src="img/admin-locks.jpg" alt="Lead Vox IEM: the drum mics are 🔒 locked — the singer can’t show or move them." loading="lazy"><figcaption>Lead Vox IEM: the drum mics are 🔒 locked — the singer can’t show or move them.</figcaption></figure>
 <p>Nothing is locked by default. Lock with the padlock next to the 👁 in the mix editor; it's saved immediately and covers both sides of a stereo pair and linked L/R inputs.</p>
 <div class="note warn">Upgrading from a version before 0.11: “hidden” used to also mean “can't be moved”. If you relied on that, lock those channels after updating.</div>
 
@@ -245,6 +264,7 @@ sudo ./dm-monitor/install.sh --hostname dm-monitor</code></pre>
   <li>At the bottom of each mix in <b>Mixes</b>: <b>Musicians with their own screen</b> — everyone who rearranged their screen. <b>Back to default</b> resets one person; <b>Reset all</b> resets the mix.</li>
   <li><b>Scenes</b>: rename or delete musicians' scenes.</li>
 </ul>
+<figure class="shot desk"><img src="img/admin-own-screens.jpg" alt="Bottom of a mix: who arranged their own screen, with Back to default." loading="lazy"><figcaption>Bottom of a mix: who arranged their own screen, with Back to default.</figcaption></figure><figure class="shot desk"><img src="img/admin-musicians.jpg" alt="Musicians: who is connected, on which mix." loading="lazy"><figcaption>Musicians: who is connected, on which mix.</figcaption></figure>
 
 <h2 id="security">Passwords and backup</h2>
 <ul>
