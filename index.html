@@ -62,6 +62,14 @@
   .coffee .links { display: flex; gap: 8px; flex-wrap: wrap; }
   .coffee a { text-decoration: none; border: 1px solid var(--line); border-radius: 10px; padding: 9px 14px; font-weight: 600; font-size: 14px; }
   .coffee a:hover { border-color: var(--blue-2); }
+  .pix-card { margin-top: 12px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .pix-card > div { flex: 1; min-width: 220px; }
+  .pix-card img { background: #fff; border-radius: 10px; padding: 8px; image-rendering: pixelated; }
+  .pix-key code { word-break: break-all; }
+  .pix-copy { background: var(--blue); color: #fff; border: 0; border-radius: 10px; padding: 10px 16px; font-weight: 600; cursor: pointer; }
+  .support-soon { color: var(--muted); font-size: 14px; }
+  .topnav { display: flex; justify-content: center; gap: 18px; padding: 14px 0 0; font-size: 14px; }
+  .topnav a { text-decoration: none; }
 
   footer { padding: 28px 0 48px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
   details { margin-top: 10px; }
@@ -71,6 +79,7 @@
 <body>
 <div class="wrap">
 
+<nav class="topnav"><a href="manual.html">📖 Manual</a><a href="#support">☕ Support</a></nav>
 <header>
   <img src="icon.png" alt="DM Monitor app icon">
   <h1>DM Monitor</h1>
@@ -108,6 +117,7 @@
     <li><b>Windows:</b> if you see “Windows protected your PC”, click <i>More info</i> → <i>Run anyway</i>.</li>
     <li><b>Raspberry Pi:</b> <code>tar xzf dm-monitor-pi-*.tar.gz &amp;&amp; sudo ./dm-monitor/install.sh --hostname dm-monitor</code></li>
     <li>Updates arrive by themselves: the Admin shows <i>Update now</i> when a new version is out.</li>
+    <li>Step by step: <a href="manual.html">read the manual</a>.</li>
   </ul>
   <details>
     <summary>Why the warning?</summary>
@@ -120,14 +130,20 @@
   <div class="coffee">
     <p><b>DM Monitor is free.</b> If it helps your team on Sunday, you can buy me a coffee — it keeps the updates coming.</p>
     <div class="links">
-      <a id="coffee-link" href="#" target="_blank" rel="noopener">☕ Buy me a coffee</a>
-      <a id="pix-link" href="#pix">Pix (Brasil)</a>
+      <a id="pix-link" href="#pix" hidden>Pix (Brasil)</a>
+      <a id="coffee-link" href="#" target="_blank" rel="noopener" hidden>☕ Ko-fi (card · PayPal)</a>
     </div>
   </div>
-  <div id="pix" hidden style="margin-top:12px" class="card">
-    <h3>Pix</h3>
-    <p>Chave: <code id="pix-key">—</code></p>
+  <div id="pix" hidden class="card pix-card">
+    <div>
+      <h3>Pix</h3>
+      <p>Scan with your bank app, or copy the code and paste it under “Pix copia e cola”. You choose the amount.</p>
+      <p class="pix-key">Key: <code id="pix-key"></code></p>
+      <button type="button" id="pix-copy" class="pix-copy">Copy Pix code</button>
+    </div>
+    <img id="pix-qr" alt="Pix QR code" width="200" height="200">
   </div>
+  <p id="support-soon" class="support-soon">Donation options coming soon.</p>
 </section>
 
 <footer>
@@ -138,10 +154,13 @@
 </footer>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.js"></script>
 <script>
-// ---- support links (fill these in) ----------------------------------------
-const COFFEE_URL = '';   // e.g. https://ko-fi.com/anderamorim
-const PIX_KEY = '';      // e.g. e-mail or random key
+// ---- Donations: fill these in and push ------------------------------------
+const PIX_KEY = '';          // e-mail, phone (+5511…), CPF/CNPJ or random key
+const PIX_NAME = '';         // receiver name, as in the bank (max 25 letters)
+const PIX_CITY = '';         // receiver city (max 15 letters), e.g. SAO PAULO
+const KOFI_URL = '';         // e.g. https://ko-fi.com/anderamorim
 
 const REPO = 'andeamorim/dm-monitor-releases';
 const NAMES = { 'mac-arm64': 'Mac (Apple Silicon)', 'mac-x64': 'Mac (Intel)', 'win-x64': 'Windows', 'pi-arm64': 'Raspberry Pi' };
@@ -162,14 +181,45 @@ function detect() {
   return null;
 }
 
-async function main() {
+// Pix "copia e cola" (BR Code, EMV static, no fixed amount) + its QR code.
+function pixPayload(key, name, city) {
+  const clean = (t, n) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9 .-]/g, '').toUpperCase().slice(0, n);
+  const f = (id, v) => id + String(v.length).padStart(2, '0') + v;
+  const body = f('00', '01')
+    + f('26', f('00', 'br.gov.bcb.pix') + f('01', key))
+    + f('52', '0000') + f('53', '986') + f('58', 'BR')
+    + f('59', clean(name, 25)) + f('60', clean(city, 15))
+    + f('62', f('05', '***')) + '6304';
+  let crc = 0xffff;
+  for (let i = 0; i < body.length; i++) {
+    crc ^= body.charCodeAt(i) << 8;
+    for (let b = 0; b < 8; b++) crc = crc & 0x8000 ? ((crc << 1) ^ 0x1021) & 0xffff : (crc << 1) & 0xffff;
+  }
+  return body + crc.toString(16).toUpperCase().padStart(4, '0');
+}
+
+function setupSupport() {
   const coffee = document.getElementById('coffee-link');
-  if (COFFEE_URL) coffee.href = COFFEE_URL; else coffee.hidden = true;
-  const pixLink = document.getElementById('pix-link');
-  if (PIX_KEY) {
+  if (KOFI_URL) { coffee.href = KOFI_URL; coffee.hidden = false; }
+  if (PIX_KEY && PIX_NAME && PIX_CITY) {
+    const code = pixPayload(PIX_KEY, PIX_NAME, PIX_CITY);
+    const link = document.getElementById('pix-link');
+    link.hidden = false;
+    link.onclick = (e) => { e.preventDefault(); const box = document.getElementById('pix'); box.hidden = !box.hidden; };
     document.getElementById('pix-key').textContent = PIX_KEY;
-    pixLink.onclick = (e) => { e.preventDefault(); document.getElementById('pix').hidden = false; };
-  } else pixLink.hidden = true;
+    try {
+      const qr = qrcode(0, 'M'); qr.addData(code); qr.make();
+      document.getElementById('pix-qr').src = qr.createDataURL(5, 2);
+    } catch { document.getElementById('pix-qr').hidden = true; }
+    document.getElementById('pix-copy').onclick = async (e) => {
+      try { await navigator.clipboard.writeText(code); e.target.textContent = 'Copied ✓'; } catch { prompt('Pix code:', code); }
+    };
+  }
+  document.getElementById('support-soon').hidden = !!(KOFI_URL || (PIX_KEY && PIX_NAME && PIX_CITY));
+}
+
+async function main() {
+  setupSupport();
 
   const me = detect();
   if (me === 'phone') document.body.classList.add('is-phone');
