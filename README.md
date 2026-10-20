@@ -3,6 +3,8 @@
 Personal monitor mixes from your phone, for Yamaha DM-series consoles.
 *Compatible with Yamaha DM series — not affiliated with or endorsed by Yamaha.*
 
+**Website:** https://www.surround.services/dmmonitor/ (download page and manual).
+
 This repository only hosts the **installers**. Get the latest version from
 [Releases](https://github.com/andeamorim/dm-monitor-releases/releases/latest):
 
